@@ -14,6 +14,7 @@ jobs:
         python: 
           - 3.6
           - 3.7
+          - 3.8
     steps:
     - uses: actions/checkout@v1
     # Pull the latest image to build, and avoid caching pull-only images.
