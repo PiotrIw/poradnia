@@ -15,6 +15,9 @@ build:
 test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
+coverage:
+	docker-compose run web bash -c "coverage run manage.py test --keepdb --verbosity=2 ${TEST} && coverage report -m --skip-covered --skip-empty"
+
 e2e:
 	docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 
