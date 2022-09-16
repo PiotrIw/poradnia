@@ -16,6 +16,7 @@ ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path("poradnia")
 
 env = environ.Env()
+env.read_env(ROOT_DIR('.env'), overwrite=False)
 
 # APP CONFIGURATION
 DJANGO_APPS = (
@@ -51,6 +52,7 @@ THIRD_PARTY_APPS = (
     "teryt_tree",
     "antispam",
     "antispam.honeypot",
+    "storages",
 )
 
 # Apps specific for this project go here.
@@ -132,8 +134,9 @@ SERVER_EMAIL = EMAIL_HOST_USER
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ("Adam Dobrawy", "adam.dobrawy@siecobywatelska.pl"),
-    ("Marcin Bójko", "marcin.bojko@siecobywatelska.pl"),
+    # ("Adam Dobrawy", "adam.dobrawy@siecobywatelska.pl"),
+    # ("Marcin Bójko", "marcin.bojko@siecobywatelska.pl"),
+    ("Piotr Iwański", "piotr.iwanski@gmail.com"),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -142,7 +145,19 @@ MANAGERS = ADMINS
 
 # DATABASE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {"default": env.db(default="mysql:///porady")}
+DATABASES = {"default": env.db('DATABASE_URL', default="mysql:///porady")}
+
+# #AZURE alternative setup
+# DATABASES = {
+#     "default": {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env.str("DBNAME"),
+#         'USER': env.str("DBUSER"),
+#         'PASSWORD': env.str("DBPASS"),
+#         'HOST': env.str("DBHOST"),
+#         'PORT': env.str("DBPORT"),
+#     }
+# } 
 
 DATABASES["default"]["TEST"] = {
     "CHARSET": "utf8mb4",
@@ -187,12 +202,12 @@ CRISPY_TEMPLATE_PACK = "bootstrap3"
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-ROOT_DIR
 STATIC_ROOT = str(ROOT_DIR.path("staticfiles"))
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = "/static/"
+# # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
+# STATIC_URL = "/static/"
 
 # See: https://docs.djangoproject.com/en/dev/ref/
 #      contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (str(APPS_DIR.path("static")),)
+# STATICFILES_DIRS = (str(APPS_DIR.path("static")),)
 
 # See: https://docs.djangoproject.com/en/dev/ref/
 #      contrib/staticfiles/#staticfiles-finders
@@ -206,9 +221,9 @@ STATICFILES_FINDERS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-ROOT_DIR
 MEDIA_ROOT = str(APPS_DIR.path("media"))
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = "/media/"
-# END MEDIA CONFIGURATION
+# # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+# MEDIA_URL = "/media/"
+# # END MEDIA CONFIGURATION
 
 # URL Configuration
 ROOT_URLCONF = "config.urls"
@@ -281,7 +296,9 @@ LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
 LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 
-PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
+#TODO restore as changed to use SendGrid email in dv/demodev
+# PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
+PORADNIA_EMAIL_OUTPUT = DEFAULT_FROM_EMAIL
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 ATOMIC_REQUESTS = True
 
@@ -340,3 +357,23 @@ LETTER_RECEIVE_SECRET = "xxxxxxxxx"
 LETTER_RECEIVE_WHITELISTED_ADDRESS = [
     "porady@siecobywatelska.pl",
 ]
+
+DEFAULT_FILE_STORAGE = 'config.backend.AzureMediaStorage'
+STATICFILES_STORAGE  = 'config.backend.AzureStaticStorage'
+
+AZURE_STORAGE_KEY = env.str('AZURE_STORAGE_KEY', "")
+AZURE_ACCOUNT_NAME = env.str('AZURE_ACCOUNT_NAME', 'demo')  # your account name
+AZURE_MEDIA_CONTAINER = env.str('AZURE_MEDIA_CONTAINER', 'media')
+AZURE_STATIC_CONTAINER = env.str('AZURE_STATIC_CONTAINER', 'static')
+
+# AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.azureedge.net'  # CDN URL
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'  # Files URL
+
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{AZURE_STATIC_CONTAINER}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{AZURE_MEDIA_CONTAINER}/'
+
+# STATIC_ROOT = os.path.join(ROOT_DIR, 'staticfiles')
+# # any static paths you want to publish
+# STATICFILES_DIRS = [
+#     os.path.join(ROOT_DIR, 'demo', 'static')
+# ]
