@@ -52,3 +52,4 @@ mistune==2.0.1
 bleach==4.1.0
 django-antispam==1.0.3
 Django==2.2.26
+django-storages[azure]==1.12.3
