@@ -2,6 +2,8 @@
 *.py[cod]
 *.pyc
 __pycache__
+.venv
+.env
 
 # Logs
 *.log
@@ -30,7 +32,7 @@ node_modules/
 
 # Campass
 .sass-cache
-staticfiles
+staticfiles*
 
 # Vagrant
 .vagrant
@@ -39,6 +41,6 @@ staticfiles
 bower_components/
 
 # Upload's directory
-poradnia/media/
+poradnia/media*
 docs/_build/
 htmlcov
