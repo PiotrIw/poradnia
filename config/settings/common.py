@@ -165,6 +165,10 @@ DATABASES["default"]["TEST"] = {
 }
 DATABASES["default"]["CHARSET"] = "utf8mb4"
 
+DATABASES["default"]["OPTIONS"] = {
+            'ssl': {'ca': ROOT_DIR.path("config/DigiCertGlobalRootCA.crt.pem")}
+        }
+
 # END DATABASE CONFIGURATION
 
 # CACHING
