@@ -1,5 +1,8 @@
 TEST=
 
+db:
+	docker-compose up db -d --remove-orphans
+
 start:
 	docker-compose up -d
 
