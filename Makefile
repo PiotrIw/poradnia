@@ -3,6 +3,9 @@ TEST=
 db:
 	docker-compose up db -d --remove-orphans
 
+up:
+	docker-compose up
+
 start:
 	docker-compose up -d
 
@@ -16,6 +19,7 @@ build:
 	docker-compose build web
 
 test: wait_mysql
+	docker-compose exec db mysql --user=root --password=password -e "DROP DATABASE IF EXISTS test_poradnia;"
 	docker-compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
 e2e: wait_mysql

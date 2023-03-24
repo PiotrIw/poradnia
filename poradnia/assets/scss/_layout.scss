@@ -3,7 +3,7 @@
 }
 .main-side{
 	@media(min-width: $grid-float-breakpoint) {
-		margin-left: 200px;
+		margin-left: 220px;
 	};
 }
 .navbar{
@@ -15,7 +15,9 @@
 	}
 }
 .content{
-	width: 90%;
+	// TODO find out why with width more than 90% cypress is failing the form month select test
+	//	cy.get(".pika-select-month").select(month.toString());
+	width: 99%;
 	margin: 6em auto;
 	@media(min-width: $screen-sm-min) {
 		margin-top: 1em;
