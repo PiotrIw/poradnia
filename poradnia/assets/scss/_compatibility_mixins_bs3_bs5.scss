@@ -1,0 +1,27 @@
+// Define a square mixin for bs5 compatibility
+@mixin square($size) {
+	width: $size;
+	height: $size;
+  }
+
+@mixin center-block {
+	display: flex;
+	justify-content: center;  // Aligns the item horizontally in the container
+	align-items: center;      // Aligns the item vertically in the container (if needed)
+  }
+
+@mixin make-md-column($columns, $padding) {
+	@media (min-width: 768px) {
+	  flex: 0 0 auto;
+	  width: calc(100% / 12) * $columns;
+	  padding: $padding;
+	}
+  }
+
+// Custom well-like class
+.well {
+	padding: 1.25rem;
+	background-color: #f8f9fa; // Light gray background, or choose another color
+	border-radius: 0.375rem; // Matching the default border-radius for Bootstrap 5
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }

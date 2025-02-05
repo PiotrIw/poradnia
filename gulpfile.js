@@ -35,7 +35,7 @@ var config = (function () {
             include: [
                 path.npm,
                 path.npm + '/pikaday-time/scss/',
-		        path.npm + '/bootstrap/scss/',
+		        // path.npm + '/bootstrap/scss/',
                 path.staticfiles,
                 path.assets + '/scss/'
             ],
@@ -63,12 +63,12 @@ var config = (function () {
         script: {
             input: [
                 path.npm + '/jquery/dist/jquery.js',
-                path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
-                path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
-                path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
-                // path.npm + '/bootstrap/js/dist/tab.js',
-                // path.npm + '/bootstrap/js/dist/tooltip.js',
-                // path.npm + '/bootstrap/js/dist/modal.js',
+                // path.npm + '/@talend/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
+                // path.npm + '/@talend/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
+                // path.npm + '/@talend/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
+                path.npm + '/bootstrap/js/dist/tab.js',
+                path.npm + '/bootstrap/js/dist/tooltip.js',
+                path.npm + '/bootstrap/js/dist/modal.js',
                 path.staticfiles + '/tasty_feedback/style.js',
                 path.npm + '/moment/moment.js',
                 path.npm + '/moment/locale/pl.js',
