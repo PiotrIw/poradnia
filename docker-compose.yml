@@ -62,6 +62,8 @@ services:
       TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
       MY_INTERNAL_IP: ${MY_INTERNAL_IP}
       NGROK_URL: ${NGROK_URL:-http://localhost}
+      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
+      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
     ports:
       - "8000:8000"
     networks:

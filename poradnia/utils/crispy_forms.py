@@ -6,10 +6,12 @@ This provides compatible replacements for the atom.ext.crispy_forms functionalit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.contrib import messages
-from django.forms import BaseFormSet
+from django.forms import BaseFormSet, BooleanField
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.http import HttpResponseRedirect
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+from tinycontent.models import TinyContent
 
 
 class FormsetHelper(FormHelper):
@@ -102,6 +104,18 @@ class FormHorizontalMixin(HelperMixin):
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-lg-3"
         self.helper.field_class = "col-lg-9"
+
+
+class GIODOMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["giodo"] = BooleanField(required=True)
+        try:
+            self.fields["giodo"].label = mark_safe(
+                TinyContent.get_content_by_name("giodo").content
+            )
+        except TinyContent.DoesNotExist:
+            self.fields["giodo"].label = "Lorem ipsum"
 
 
 # View mixins
