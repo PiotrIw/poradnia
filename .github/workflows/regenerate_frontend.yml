@@ -10,11 +10,11 @@ jobs:
     strategy:
       matrix:
         python:
-          - "3.12"
+          - "3.13"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # Ensure you fetch the PR branch
           fetch-depth: 0
