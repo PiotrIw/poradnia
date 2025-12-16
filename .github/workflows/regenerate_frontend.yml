@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
-          git diff-index --quiet HEAD -- poradnia/static/ package*.json || (
+          git diff-index HEAD -- poradnia/static/ package*.json || (
             echo "Pending changes in the front-end have been detected.";
             echo "Use 'make regenerate_frontend' to regenerate front-end ";
             echo "and commit changes. Following changes pending:";
