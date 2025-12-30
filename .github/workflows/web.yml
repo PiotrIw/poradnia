@@ -9,16 +9,16 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  django:
+  django_build_and_test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python:
-          #           - 3.6
-          - "3.13"
-        django:
-          #           - "==2.2.*"
-          - "==4.2.*"
+    # strategy:
+    #   matrix:
+    #     python:
+    #       #           - 3.6
+    #       - "3.13"
+    #     django:
+    #       #           - "==2.2.*"
+    #       - "==4.2.*"
     steps:
       - uses: actions/checkout@v6
       # Pull the latest image to build, and avoid caching pull-only images.
