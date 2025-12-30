@@ -187,15 +187,16 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         )
 
     def make_random_password(
-            self,
-            length=10,
-            allowed_chars="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
-        ):
+        self,
+        length=10,
+        allowed_chars="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+    ):
         """
         Replacement for Django <5.0 BaseUserManager.make_random_password().
         Generates a cryptographically secure random password.
         """
         return get_random_string(length, allowed_chars)
+
 
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(
