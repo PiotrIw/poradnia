@@ -17,7 +17,8 @@ from django.db.models import (
 )
 from django.db.models.query import QuerySet
 from django.urls import reverse
-from django.utils.datetime_safe import datetime
+from django.utils import timezone
+from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
@@ -124,7 +125,7 @@ class UserQuerySet(QuerySet):
         )
 
     def active(self):
-        start = datetime.today().replace(day=1)
+        start = timezone.now().replace(day=1)
         return self.filter(letter_created_by__created_on__date__gte=start).annotate(
             active=Count("letter_created_by")
         )
@@ -184,6 +185,17 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         return self.annotate(has_unverified_email=~Exists(subquery)).filter(
             has_unverified_email=True
         )
+
+    def make_random_password(
+        self,
+        length=10,
+        allowed_chars="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+    ):
+        """
+        Replacement for Django <5.0 BaseUserManager.make_random_password().
+        Generates a cryptographically secure random password.
+        """
+        return get_random_string(length, allowed_chars)
 
 
 class User(GuardianUserMixin, AbstractUser):
