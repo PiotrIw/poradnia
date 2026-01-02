@@ -1,6 +1,6 @@
 # Local development dependencies go here
 -r base.txt
-Sphinx==9.0.4
+Sphinx==9.1.0
 
 django-debug-toolbar==6.1.0
 django-extensions==4.1
