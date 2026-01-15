@@ -437,11 +437,12 @@ class ReceiveEmailView(View):
                         "message": REFUSE_MESSAGE,
                         "notified": True,
                     },
-                    status=400,  # keep 400 if you want; daemon will handle it explicitly
+                    status=400,  # keep 400; daemon will handle it explicitly
                 )
             else:
                 logger.warning(
-                    f"Letter refused (autoreply): {REFUSE_MESSAGE}", extra={"email_refusal": ctx}
+                    f"Letter refused (autoreply): {REFUSE_MESSAGE}",
+                    extra={"email_refusal": ctx},
                 )
                 return JsonResponse(
                     {
@@ -450,7 +451,7 @@ class ReceiveEmailView(View):
                         "message": REFUSE_MESSAGE,
                         "notified": False,
                     },
-                    status=400,  # keep 400 if you want; daemon will handle it explicitly
+                    status=400,  # keep 400; daemon will handle it explicitly
                 )
         try:
             actor = self.create_user(manifest)
