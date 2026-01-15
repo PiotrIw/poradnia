@@ -403,11 +403,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
+    "promotion": False,
     "height": 500,
     "menubar": True,
     "lineheight": 1,
-    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
-    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "plugins": "advlist,autolink,lists,link,image,charmap,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,"
     "code,help,wordcount",
     "toolbar": "undo redo | formatselect | lineheight | fontsizeselect |"
     "bold italic backcolor | alignleft aligncenter "

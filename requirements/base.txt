@@ -17,7 +17,6 @@ sorl-thumbnail==12.11.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-#  version 0.62 requires config change - reverting bot change
 django-allauth==65.13.1
 
 # For the persistance stores
@@ -44,14 +43,12 @@ django-turnstile==0.1.2
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 
 django-autocomplete-light==3.12.1
-django-tinymce==3.7.1
+django-tinymce==5.0.0
 
 # replacing unmaintained django-atom with updated fork
 # django-atom==0.16.3
 git+https://github.com/PiotrIw/django-atom.git@master
 
-# django-tinycontent is not supported anymore so watchdog maintained fork
-# django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
 icalendar==6.3.2
