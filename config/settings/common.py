@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = (
     "allauth",  # registration
     "allauth.account",  # registration
     "allauth.socialaccount",  # registration
+    "allauth.socialaccount.providers.google",
     "guardian",
     "django_mailbox",
     "dal",
@@ -97,6 +98,28 @@ MIDDLEWARE = (
     "allauth.account.middleware.AccountMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
+
+# SOCIALACCOUNT PROVIDER SPECIFIC SETTINGS
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": env("GOOGLE_CLIENT_ID"),
+            "secret": env("GOOGLE_CLIENT_SECRET"),
+            "key": "",
+        },
+        "SCOPE": ["profile", "email"],
+    }
+}
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# END SOCIALACCOUNT PROVIDER SPECIFIC SETTINGS
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 
 # SITE CONFIGURATION
 # Hosts/domain names that are valid for this site
