@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = (
     "allauth.account",  # registration
     "allauth.socialaccount",  # registration
     "allauth.socialaccount.providers.google",
+    "allauth.mfa",
     "guardian",
     "django_mailbox",
     "dal",
@@ -96,6 +97,7 @@ MIDDLEWARE = (
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
+    "poradnia.users.middleware.EnforceStaffMfaOnPasswordLoginMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
 
@@ -110,12 +112,15 @@ SOCIALACCOUNT_PROVIDERS = {
         "SCOPE": ["profile", "email"],
     }
 }
+SOCIALACCOUNT_ADAPTER = "poradnia.users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_LOGIN_ON_GET = True
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
+# we rely on email verification of the provider, e.g. Google,
+# so we don't want allauth to require it again
+# change to "mandatory" if you want to require email verification
+# for social accounts that do not provide verified email (e.g. Facebook)
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 # END SOCIALACCOUNT PROVIDER SPECIFIC SETTINGS
 
 # AUTHENTICATION CONFIGURATION
@@ -124,10 +129,35 @@ AUTHENTICATION_BACKENDS = (
     "guardian.backends.ObjectPermissionBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-# Some really nice defaults
-ACCOUNT_LOGIN_METHODS = {"username", "email"}
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_SESSION_REMEMBER = None
+MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
+MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
+MFA_TOTP_ISSUER = "Poradnia Sieć Obywatelska MFA"  # shown in authenticator app
+MFA_TOTP_DIGITS = 6
+MFA_TOTP_PERIOD = 30
+MFA_TOTP_TOLERANCE = 0
 # END AUTHENTICATION CONFIGURATION
 
 # Custom user app defaults
