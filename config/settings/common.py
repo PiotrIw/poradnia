@@ -118,13 +118,33 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # END SOCIALACCOUNT PROVIDER SPECIFIC SETTINGS
 
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-USE_X_FORWARDED_HOST = True
+# AUTHENTICATION CONFIGURATION
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "guardian.backends.ObjectPermissionBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+# Some really nice defaults
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# END AUTHENTICATION CONFIGURATION
+
+# Custom user app defaults
+# Select the correct user model
+AUTH_USER_MODEL = "users.User"
+ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
+ACCOUNT_FORMS = {"login": "poradnia.users.login_form.CustomLoginForm"}
+LOGIN_REDIRECT_URL = "home"
+LOGIN_URL = "account_login"
+# END Custom user app defaults
 
 # SITE CONFIGURATION
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["*"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 # END SITE CONFIGURATION
 
 # MIGRATIONS CONFIGURATION
@@ -262,28 +282,6 @@ ROOT_URLCONF = "config.urls"
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
 # End URL Configuration
-
-# AUTHENTICATION CONFIGURATION
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "guardian.backends.ObjectPermissionBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-# Some really nice defaults
-ACCOUNT_LOGIN_METHODS = {"username", "email"}
-ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# END AUTHENTICATION CONFIGURATION
-
-# Custom user app defaults
-# Select the correct user model
-AUTH_USER_MODEL = "users.User"
-ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
-ACCOUNT_FORMS = {"login": "poradnia.users.login_form.CustomLoginForm"}
-LOGIN_REDIRECT_URL = "home"
-LOGIN_URL = "account_login"
-# END Custom user app defaults
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
