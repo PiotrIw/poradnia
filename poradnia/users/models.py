@@ -28,7 +28,6 @@ from sorl.thumbnail import ImageField
 from poradnia.cases.models import Case as CaseModel
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
-
 _("Username or e-mail")  # Hack to overwrite django translation
 _("Login")
 

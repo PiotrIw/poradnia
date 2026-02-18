@@ -6,7 +6,6 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import resolve, reverse
 
-
 AUTH_METHODS_SESSION_KEY = "account_authentication_methods"
 
 
@@ -33,7 +32,8 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
     Policy:
       - If user is staff/superuser AND session indicates password was used,
         require MFA completion (TOTP/recovery codes) before allowing access.
-      - If user authenticated via social login only (e.g., Google), do NOT require allauth MFA.
+      - If user authenticated via social login only (e.g., Google),
+        do NOT require allauth MFA.
 
     Notes:
       - Prevent redirect loops by exempting allauth account + mfa endpoints.
@@ -63,21 +63,26 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Skip if not authenticated
         user = getattr(request, "user", None)
-        if not user or not user.is_authenticated:
-            return self.get_response(request)
+        path = request.path_info
 
+        static_url = getattr(settings, "STATIC_URL", "/static/")
+        media_url = getattr(settings, "MEDIA_URL", "/media/")
+
+        # Only treat STATIC_URL / MEDIA_URL as path prefixes when they look like paths
+        static_prefix = static_url if static_url.startswith("/") else "/static/"
+        media_prefix = media_url if media_url.startswith("/") else "/media/"
+
+        # Skip if user not authenticated
         # Only enforce for staff/superuser
-        if not (user.is_staff or user.is_superuser):
-            return self.get_response(request)
-
         # Exempt static/media and exempt url names
-        if request.path.startswith(getattr(settings, "STATIC_URL", "/static/")):
-            return self.get_response(request)
-        if request.path.startswith(getattr(settings, "MEDIA_URL", "/media/")):
-            return self.get_response(request)
-        if request.path in ("/favicon.ico", "/robots.txt"):
+        if (
+            (not user or not user.is_authenticated)
+            or not (user.is_staff or user.is_superuser)
+            or path.startswith(static_prefix)
+            or path.startswith(media_prefix)
+            or path in ("/favicon.ico", "/robots.txt")
+        ):
             return self.get_response(request)
 
         try:
