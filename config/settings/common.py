@@ -16,8 +16,8 @@ from django.utils.translation import gettext_lazy as _
 ROOT_DIR = environ.Path(__file__) - 3
 
 APPS_DIR = ROOT_DIR.path("poradnia")
-
 env = environ.Env()
+APP_MODE = env.str("APP_MODE", "DEMO")
 
 # APP CONFIGURATION
 DJANGO_APPS = (
@@ -157,7 +157,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_SESSION_REMEMBER = None
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
-MFA_TOTP_ISSUER = "Poradnia Sieć Obywatelska MFA"  # shown in authenticator app
+MFA_TOTP_ISSUER = f"Poradnia {APP_MODE} SO MFA"  # shown in authenticator app
 MFA_TOTP_DIGITS = 6
 MFA_TOTP_PERIOD = 30
 MFA_TOTP_TOLERANCE = 0
@@ -383,7 +383,6 @@ LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 # use DEV, DEMO and PROD values in env variable APP_MODE
 # A lot of hardcoded templates and testing data contains "@porady.siecobywatelska.pl"
 TESTING = (len(sys.argv) > 1 and sys.argv[1] == "test") or env("TEST", default=False)
-APP_MODE = env.str("APP_MODE", "DEMO")
 
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
