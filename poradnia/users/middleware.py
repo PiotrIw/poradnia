@@ -107,14 +107,11 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
                 auth_method_types.intersection({"totp", "recovery_codes", "mfa"})
             )
             if not mfa_done:
-                logger.debug(
+                logger.info(
                     "AUTH_METHODS: %s",
                     request.session.get("account_authentication_methods"),
                 )
-                logger.debug(
-                    "SOCIAL_FLAG: %s", request.session.get("poradnia_auth_via_social")
-                )
-                logger.debug("PATH: %s", request.path)
+                logger.info("PATH: %s", request.path)
                 return redirect(reverse("mfa_index"))
 
         return self.get_response(request)
