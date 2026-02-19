@@ -1,5 +1,5 @@
+from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib import admin
-from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 
 
 def _readonly_all_fields(model):
