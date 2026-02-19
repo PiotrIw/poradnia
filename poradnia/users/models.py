@@ -158,7 +158,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
             user = self.register_by_email(email=email, notify=notify)
         return user
 
-    def email_to_unique_username(self, email, limit=10):
+    def email_to_unique_username(self, email, limit=8):
         suffix_len = len(str(limit)) + 1
         max_length = User._meta.get_field("username").max_length - suffix_len
         limit_org = limit
