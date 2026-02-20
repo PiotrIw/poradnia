@@ -37,10 +37,13 @@ class UserTestCase(TestCase):
         User.objects.create_user(email=email, username=username)
 
     def test_email_to_username(self):
+        print("Testing example0@example.com user creation")
         self._create_user("example0@example.com", "example__example_com")
         for i in range(1, 9):
+            print(f"Testing example{i}@example.com user creation")
             self._create_user(f"example{i}@example.com", f"example__example_com-{i}")
         with self.assertRaises(ValueError):
+            print("Testing example9@example.com user creation")
             self._create_user("example9@example.com", "example__example_com-9")
 
     def test_login_email(self):  # Test for regresion #204
