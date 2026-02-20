@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 
 from poradnia.judgements.models import Court
 from poradnia.judgements.registry import get_parser_keys
-from poradnia.judgements.settings import JUDGEMENT_BOT_USERNAME, JUDGEMENT_BOT_EMAIL
+from poradnia.judgements.settings import JUDGEMENT_BOT_EMAIL, JUDGEMENT_BOT_USERNAME
 from poradnia.judgements.utils import Manager
 
 
