@@ -42,7 +42,6 @@ services:
       CYPRESS_BASE_URL: http://web:8000
       # To bypass MFA in E2E tests, we use a custom header and secret.
       E2E_MFA_BYPASS_ENABLED: "1"
-      E2E_MFA_BYPASS_HEADER: "HTTP_X_E2E_BYPASS_MFA"
       E2E_MFA_BYPASS_SECRET: "supersecret-123"
     volumes:
       - ./tests:/e2e

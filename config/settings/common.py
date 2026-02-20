@@ -387,7 +387,6 @@ LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 TESTING = (len(sys.argv) > 1 and sys.argv[1] == "test") or env("TEST", default=False)
 # To bypass MFA in E2E tests, we use a custom header and secret.
 E2E_MFA_BYPASS_ENABLED = TESTING
-E2E_MFA_BYPASS_HEADER = env.str("E2E_MFA_BYPASS_HEADER", "")
 E2E_MFA_BYPASS_SECRET = env.str("E2E_MFA_BYPASS_SECRET", "")
 
 # Email settings for cases. Uses different email addresses in different environments

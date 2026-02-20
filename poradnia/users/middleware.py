@@ -90,9 +90,6 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
         #     "E2E enabled=%s",
         #     getattr(settings, "E2E_MFA_BYPASS_ENABLED", None),
         # )
-        # logger.info(
-        #     "E2E header meta key=%s", getattr(settings, "E2E_MFA_BYPASS_HEADER", None)
-        # )
         # logger.info("E2E secret=%s", getattr(settings, "E2E_MFA_BYPASS_SECRET", None))
         # logger.info("E2E received cookies=%s", request.COOKIES.get("e2e_bypass_mfa"))
 
