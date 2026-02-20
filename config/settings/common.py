@@ -385,7 +385,13 @@ LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 # use DEV, DEMO and PROD values in env variable APP_MODE
 # A lot of hardcoded templates and testing data contains "@porady.siecobywatelska.pl"
 TESTING = (len(sys.argv) > 1 and sys.argv[1] == "test") or env("TEST", default=False)
+# To bypass MFA in E2E tests, we use a custom header and secret.
+E2E_MFA_BYPASS_ENABLED = TESTING
+E2E_MFA_BYPASS_HEADER = env.str("E2E_MFA_BYPASS_HEADER", "")
+E2E_MFA_BYPASS_SECRET = env.str("E2E_MFA_BYPASS_SECRET", "")
 
+# Email settings for cases. Uses different email addresses in different environments
+# to avoid sending emails to real users.
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 if APP_MODE == "DEV" and not TESTING:

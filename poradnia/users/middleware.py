@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def _get_auth_method_types(request) -> set[str]:
     """
     allauth stores a list of dicts in session, e.g.:
-      [{"type": "password"}, {"type": "totp"}]
+      [{"method": "password"}, {"method": "totp"}]
     """
     methods = request.session.get(AUTH_METHODS_SESSION_KEY, []) or []
     out: set[str] = set()
@@ -84,6 +84,23 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
             or path in ("/favicon.ico", "/robots.txt")
         ):
             return self.get_response(request)
+
+        # Debug logging to help troubleshoot any issues with E2E bypass
+        # logger.info(
+        #     "E2E enabled=%s",
+        #     getattr(settings, "E2E_MFA_BYPASS_ENABLED", None),
+        # )
+        # logger.info(
+        #     "E2E header meta key=%s", getattr(settings, "E2E_MFA_BYPASS_HEADER", None)
+        # )
+        # logger.info("E2E secret=%s", getattr(settings, "E2E_MFA_BYPASS_SECRET", None))
+        # logger.info("E2E received cookies=%s", request.COOKIES.get("e2e_bypass_mfa"))
+
+        # E2E tests bypass: if enabled and cookie matches secret, skip MFA enforcement.
+        if getattr(settings, "E2E_MFA_BYPASS_ENABLED", False):
+            secret = getattr(settings, "E2E_MFA_BYPASS_SECRET", "")
+            if secret and request.COOKIES.get("e2e_bypass_mfa") == secret:
+                return self.get_response(request)
 
         try:
             match = resolve(request.path_info)
