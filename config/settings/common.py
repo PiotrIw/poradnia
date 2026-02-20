@@ -374,6 +374,8 @@ LOGGING = {
 ANONYMOUS_USER_ID = -1
 ANONYMOUS_USER_NAME = "AnonymousUser"
 GUARDIAN_MONKEY_PATCH_USER = False
+JUDGEMENT_BOT_USERNAME = env.str("JUDGEMENT_BOT_USERNAME", "JudgementBot")
+JUDGEMENT_BOT_EMAIL = env.str("JUDGEMENT_BOT_EMAIL", "judgementbot@judgement.bot")
 
 LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
