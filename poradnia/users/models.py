@@ -248,6 +248,9 @@ class User(GuardianUserMixin, AbstractUser):
     created_on = models.DateTimeField(
         auto_now_add=True, null=True, blank=True, verbose_name=_("Created on")
     )
+    must_change_password = models.BooleanField(
+        default=False, verbose_name=_("Must change password")
+    )
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):

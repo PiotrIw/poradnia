@@ -129,3 +129,54 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
                 return redirect(reverse("mfa_index"))
 
         return self.get_response(request)
+
+
+class ForcePasswordChangeMiddleware:
+    """
+    Forces authenticated users with must_change_password=True
+    to change their password before accessing the rest of the site.
+    """
+
+    ALLOWED_VIEWNAMES = {
+        "account_change_password",
+        "account_set_password",
+        "account_logout",
+        "account_login",
+    }
+
+    ALLOWED_PATH_PREFIXES = (
+        settings.STATIC_URL,
+        settings.MEDIA_URL,
+        "/admin/login/",  # prevent admin login loop
+    )
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+
+        user = getattr(request, "user", None)
+
+        if user and user.is_authenticated:
+            if getattr(user, "must_change_password", False):
+
+                # Allow static/media immediately
+                if request.path.startswith(self.ALLOWED_PATH_PREFIXES):
+                    return self.get_response(request)
+
+                try:
+                    match = resolve(request.path_info)
+                    viewname = match.view_name
+                except Exception:
+                    viewname = None
+
+                if viewname not in self.ALLOWED_VIEWNAMES:
+
+                    # If user has no usable password (e.g. social-only account),
+                    # send them to set_password instead of change_password
+                    if not user.has_usable_password():
+                        return redirect(reverse("account_set_password") + "?next=/")
+
+                    return redirect(reverse("account_change_password") + "?next=/")
+
+        return self.get_response(request)

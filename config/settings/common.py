@@ -98,6 +98,7 @@ MIDDLEWARE = (
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
     "poradnia.users.middleware.EnforceStaffMfaOnPasswordLoginMiddleware",
+    "poradnia.users.middleware.ForcePasswordChangeMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
 
