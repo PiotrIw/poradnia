@@ -1,7 +1,7 @@
 import logging
+
 from allauth.account.signals import password_changed, password_set
 from django.dispatch import receiver
-
 
 logger = logging.getLogger(__name__)
 
