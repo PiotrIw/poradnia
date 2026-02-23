@@ -14,12 +14,12 @@
             .{% endblocktrans %}</p>
         {% get_providers as socialaccount_providers %}
         {% if socialaccount_providers %}
-                <p>{% blocktrans %}You can register with Google account:{% endblocktrans %}
+                <p>Możesz zarejestrować się z a pomocą konta Google:
                     <a class="btn btn-default" href="{% provider_login_url 'google' %}">
                         <i class="fa-brands fa-google" aria-hidden="true"></i>
-                        {% trans 'Signup' %}
+                        Rejestracja
                     </a>
-                    {% trans 'or the form below.' %}
+                    lub formularza poniżej
                 </p>
         {% endif %}
         <p>{% trans 'Field with asterisk are required.' %}</p>
