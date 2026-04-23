@@ -26,7 +26,9 @@ class AdviceWebhookViewTestCase(TestCase):
         self.assertEqual(resp.status_code, 401)
 
     def test_invalid_json(self):
-        resp = self.client.post(self.url, data="not-json", content_type="application/json")
+        resp = self.client.post(
+            self.url, data="not-json", content_type="application/json"
+        )
         self.assertEqual(resp.status_code, 400)
 
     def test_required_fields(self):
