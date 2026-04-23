@@ -147,9 +147,7 @@ class AdviceWebhookUpsertView(View):
                 return _json_error("not_found", "Advice not found", 404)
 
         if not advice and payload.get("case_id"):
-            advice = Advice.objects.filter(
-                case_id=payload["case_id"]
-            ).first()
+            advice = Advice.objects.filter(case_id=payload["case_id"]).first()
 
         created = advice is None
         advice = advice or Advice()
