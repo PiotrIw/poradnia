@@ -176,7 +176,9 @@ class AdviceWebhookUpsertView(View):
         case_id = payload.get("case_id")
 
         if advice_id is None and case_id is None:
-            errors["non_field_errors"] = ["Provide at least one of advice_id or case_id."]
+            errors["non_field_errors"] = [
+                "Provide at least one of advice_id or case_id."
+            ]
         if advice_id is not None and not _is_int(advice_id):
             errors["advice_id"] = ["Must be an integer."]
         if case_id is not None and not _is_int(case_id):
@@ -221,8 +223,10 @@ class AdviceWebhookUpsertView(View):
                 if value is not None and not _is_int(value):
                     errors[field_name] = ["Must be an integer or null."]
 
-        if "helped" in payload and payload["helped"] is not None and not isinstance(
-            payload["helped"], bool
+        if (
+            "helped" in payload
+            and payload["helped"] is not None
+            and not isinstance(payload["helped"], bool)
         ):
             errors["helped"] = ["Must be a boolean or null."]
 
@@ -265,7 +269,9 @@ class AdviceWebhookUpsertView(View):
 
         if created:
             if "advicer_id" not in payload:
-                errors["advicer_id"] = ["This field is required when creating an Advice."]
+                errors["advicer_id"] = [
+                    "This field is required when creating an Advice."
+                ]
             if "created_by_id" not in payload:
                 errors["created_by_id"] = [
                     "This field is required when creating an Advice."
